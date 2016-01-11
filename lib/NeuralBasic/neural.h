@@ -6,14 +6,14 @@ class Dendritic_Output{
     public:
     	Dendritic_Output(double ,Neural*);
 
-	    void handle(double);
-    	//Handle the income signal
+	    bool outPut(double);
+    	//Sendout the signal.
     	void modifyWeight(double);
     	//Make a interface for outside to modify inner weight
     	void modifyConnect(Neural*);
     	//Make a interface for outside to modify inner Connect
 
-    private:
+    priate:
 	    Neural* connected;
 	    //Contain address which neural this dendritic is connect with
 	    double weight;
@@ -44,10 +44,12 @@ class Neural{
 
 		~Neural()
 
-	    void ouputSignal(double);
+	    void outputSignal(double);
         //Assign the signal for every output Dendritics
         void comeinHandle(double ,short);
         //Get input Signal and pair ID for get weight
+		short getIDcounter(){return IDcounter;}
+
 
     private:
 	    Dendritic * inputLink;
@@ -55,8 +57,10 @@ class Neural{
 	    Dendritic * outputLink;
     	//This for output end dendritic array
         
+		bool * outputID;
         double bias;
-        //There put a bias that can modify which number added
+		double sum;
+		short IDcounter;
 
 };
 

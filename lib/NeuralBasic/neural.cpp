@@ -18,12 +18,13 @@ void Dendritic_Output::modifyConnect(Neural* newConnect){
     connected = newConnect;
 }
 
-void Dendritic_Output::modifyWeight(double incomeWeight){
-    weight = incomeWeight;    
+void Dendritic_Output::modifyWeight(double incomeWeight){    
+	weight = incomeWeight;
 }
 
-void Dendritic_Output::handle(double Signal){
-    Signal *= weight;
+double Dendritic_Output::output(double Signal){
+
+	connected->comeinHandle(Signal,connected->getIDcounter() );
 
 }
 
@@ -44,9 +45,9 @@ void Dendritic_Input::modifyWeight(double incomeWeight){
     weight = incomeWeight;    
 }
 
-void Dendritic_Input::handle(double Signal){
+double Dendritic_Input::handle(double Signal){
     Signal *= weight;
-
+	return Signal;
 }
 
 
@@ -56,6 +57,9 @@ void Dendritic_Input::handle(double Signal){
 //Neural
 
 Neural::Neural(int inputSize ,int outputSize){
+	outputID  = new bool[outputSize];
+	for(int i=0;i<outputSize;++i)
+		bool[i] = false;
 
 	inputLink = new Dendritic_Input[inputSize];
 	//Create input end dendritic
@@ -91,6 +95,22 @@ Neural::Neural(int intputSize ,int outputSize ,double* weightOut, double* weight
 	//Set the weight
 
 	bias = biasIn;
+}
+
+void Neural::comeinHandle(double signal ,short ID){
+
+	sum += inputLink[ID].handle(signal);
+
+}
+
+void Neural::outputSignal(){
+
+	for(int i=0;i<(sizeof(outputLink)/sizeof(Dendritic_Output));++i)
+		if(outputLink[i].outPut() && !outputID[i])outputID[i] = true;
+
+	for(int i=0;i<(sizeof(outputLink)/sizeof(Dendritic_Output));++i)
+		if(!outputID[i])exit(0);
+
 }
 
 //Neural
