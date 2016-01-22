@@ -1,65 +1,11 @@
 #include "neural.h"
-
-//Dendritic_Output
-
-Dendritic_Output::Dendritic_Output(){
-    weight    = NULL;
-	connected = NULL;
-}
-
-Dendritic_Output::Dendritic_Output(double wei,Neural * connect){
-
-    weight    = wei;
-	connected = connect;
-
-}
-
-void Dendritic_Output::modifyConnect(Neural* newConnect){
-    connected = newConnect;
-}
-
-void Dendritic_Output::modifyWeight(double incomeWeight){    
-	weight = incomeWeight;
-}
-
-double Dendritic_Output::output(double Signal){
-
-	connected->comeinHandle(Signal,connected->getIDcounter() );
-
-}
-
-//Dendritic_Output
-
-
-//Dendritic_Input
-
-Dendritic_Input::Dendritic_Input(){
-    weight    = NULL;
-}
-
-Dendritic_Input::Dendritic_Input(double wei){
-    weight = wei;
-}
-
-void Dendritic_Input::modifyWeight(double incomeWeight){
-    weight = incomeWeight;    
-}
-
-double Dendritic_Input::handle(double Signal){
-    Signal *= weight;
-	return Signal;
-}
-
-
-//Dendritic_Input
-
-
+#include <stdlib.h>
 //Neural
 
 Neural::Neural(int inputSize ,int outputSize){
 	outputID  = new bool[outputSize];
 	for(int i=0;i<outputSize;++i)
-		bool[i] = false;
+		outputID[i] = false;
 
 	inputLink = new Dendritic_Input[inputSize];
 	//Create input end dendritic
@@ -78,7 +24,7 @@ Neural::Neural(int inputSize ,int outputSize){
 	bias = 0.0;
 }
 
-Neural::Neural(int intputSize ,int outputSize ,double* weightOut, double* weightIn, double biasIn){
+Neural::Neural(int inputSize ,int outputSize ,double* weightOut, double* weightIn, double biasIn){
 
 	inputLink = new Dendritic_Input[inputSize];
 	//Create input end dendritic
@@ -106,7 +52,7 @@ void Neural::comeinHandle(double signal ,short ID){
 void Neural::outputSignal(){
 
 	for(int i=0;i<(sizeof(outputLink)/sizeof(Dendritic_Output));++i)
-		if(outputLink[i].outPut() && !outputID[i])outputID[i] = true;
+		if(!outputID[i])outputID[i] = true;
 
 	for(int i=0;i<(sizeof(outputLink)/sizeof(Dendritic_Output));++i)
 		if(!outputID[i])exit(0);
