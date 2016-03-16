@@ -5,33 +5,75 @@
 
 using namespace std;
 
-typedef double (*judge)();
-typedef double (*count)(double* ,int);
-
-struct weightPoint
+struct Signal
 {
-	int    weightFrom;
-	double weight;
+	unsigned int    SignalOrigin;
+	double 			value;
 }
+
+typedef Signal (*judge)(double);
+typedef double (*count)();
+
+typedef Signal Weight;
 
 class neural
 {
 
 	public:
 
-		neural(int mark, judgeFunc judgeFunction)
+		neural(unsigned int mark, judgeFunc judgeFunction)
 		{
 			judgeFunc  = judgeFunction;
 			neuralMark = mark;
 		}
 
+///////////////////////////////////////////////////
+		bool isReady()
+		{
+			vector<unsigned int> input = inputConnected;
+
+			size_t size = input.size();
+			unsigned int minus = 0;
+
+			for(unsigned int i = 0;i < size;++i)
+			{
+				for(auto j : SignalIn)
+				{
+					if(j == *(input.begin()+i-minus))
+					{
+						x.erase(input.begin()+i-minus);
+						++minus;
+					}	
+				}
+			}
+
+			if(input.empty() )
+				return true;
+			else
+				return false;
+		}
+
+/////////////////////////////////////////////////
+
+		bool operator == (const unsigned int & compare)
+		{
+			if(neuralMark == compare)
+				return true;
+			else 
+				return false;
+		}
+
+////////////////////////////////////////////////
+
 		noneParam           judgeFunc;
 		count 				countValue;
 
-		vector<int>         SignalOut;
-		vector<weightPoint> weight;
+		vector<unsigned int>    outputConnected;
+		vector<unsigned int>	inputConnected;
+		vector<Weight> 			weight;
+		vector<Signal>			SignalIn;
 
-		int                 neuralMark;
+		unsigned int   			neuralMark;
 };
 
 
