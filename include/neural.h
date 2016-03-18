@@ -9,23 +9,25 @@ struct Signal
 {
 	unsigned int    SignalOrigin;
 	double 			value;
-}
+};
 
-typedef Signal (*judge)(double);
-typedef double (*count)();
+struct Weight
+{
+	unsigned int SignalOrigin;
+	double       value;
+};
 
-typedef Signal Weight;
+typedef Signal(*judge)(double,unsigned int);
+typedef double(*count)(vector<Signal>, vector<Weight>);
+
 
 class neural
 {
 
 	public:
 
-		neural(unsigned int mark, judgeFunc judgeFunction)
-		{
-			judgeFunc  = judgeFunction;
-			neuralMark = mark;
-		}
+		neural(count countFunction,judge judgeFunction)
+		{countValue = countFunction;judgeFunc = judgeFunction;}
 
 ///////////////////////////////////////////////////
 		bool isReady()
@@ -39,9 +41,9 @@ class neural
 			{
 				for(auto j : SignalIn)
 				{
-					if(j == *(input.begin()+i-minus))
+					if(j.SignalOrigin == *(input.begin()+i-minus))
 					{
-						x.erase(input.begin()+i-minus);
+						input.erase(input.begin()+i-minus);
 						++minus;
 					}	
 				}
@@ -65,8 +67,8 @@ class neural
 
 ////////////////////////////////////////////////
 
-		noneParam           judgeFunc;
-		count 				countValue;
+		judge    	            judgeFunc;
+		count 					countValue;
 
 		vector<unsigned int>    outputConnected;
 		vector<unsigned int>	inputConnected;
