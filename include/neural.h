@@ -27,19 +27,19 @@ class neural
 	public:
 
 		neural(count countFunction,judge judgeFunction)
-		{countValue = countFunction;judgeFunc = judgeFunction;}
+		{this -> countValue = countFunction;this -> judgeFunc = judgeFunction;}
 
 ///////////////////////////////////////////////////
 		bool isReady()
 		{
-			vector<unsigned int> input = inputConnected;
+			vector<unsigned int> input = this -> inputConnected;
 
 			size_t size = input.size();
 			unsigned int minus = 0;
 
 			for(unsigned int i = 0;i < size;++i)
 			{
-				for(auto j : SignalIn)
+				for(auto j : this -> SignalIn)
 				{
 					if(j.SignalOrigin == *(input.begin()+i-minus))
 					{
@@ -59,7 +59,7 @@ class neural
 
 		bool operator == (const unsigned int & compare)
 		{
-			if(neuralMark == compare)
+			if(this -> neuralMark == compare)
 				return true;
 			else 
 				return false;
