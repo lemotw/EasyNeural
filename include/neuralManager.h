@@ -19,7 +19,7 @@ class neuralManager
 			for(auto i : this -> Entrance)
 				if(i == mark)
 					return;
-			Entrance.push_back(mark);
+			Entrance.insert(mark);
 			return;
 		}
 
@@ -71,7 +71,7 @@ class neuralManager
 /////////////////////////////////////////////////////////////////
 
 		vector<neural> network;
-		vector<unsigned int> Entrance;
+		set<unsigned int> Entrance;
 		unsigned int   Size;
 
 };
