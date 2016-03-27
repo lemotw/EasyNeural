@@ -7,8 +7,8 @@ using namespace std;
 
 struct Signal
 {
-	unsigned int    SignalOrigin;
-	double 			value;
+	unsigned int SignalOrigin;
+	double 		 value;
 };
 
 struct Weight
@@ -54,9 +54,24 @@ class neural
 			else
 				return false;
 		}
+		//Check whether the all input is contain in SignalIn.
 
 /////////////////////////////////////////////////
 
+		inline void addWeight(double wei, unsigned int mark){
+			Weight weiAdd;
+			weiAdd.SignalOrigin = mark;
+			Weight.value        = wei;
+			weight.push_back(weiAdd);
+		}
+
+		inline void addWeight(Weight weiAdd){weight.push_back(weiAdd);}
+
+		//As the function name.
+
+////////////////////////////////////////////////
+
+		
 		bool operator == (const unsigned int & compare)
 		{
 			if(this -> neuralMark == compare)
