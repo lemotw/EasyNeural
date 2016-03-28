@@ -2,8 +2,8 @@
 #define NEURALMANAGER_H
 
 #define ENDPOINT   4294967295
-#define STARTPOINT 4294967294
 #define SIGNALPOINT 0
+#define SIGNALNULL  4294967294
 
 #include "neural.h"
 
@@ -32,10 +32,12 @@ class neuralManager
 		{
 		//
 			if(enter == ENDPOINT)
-					return Data;
+				return Data;
 
 			Signal output;
-			this -> network.at(enter-1).SignalIn.push_back(Data);
+
+			if(Data.SignalOrigin != SIGNALNULL)
+				this -> network.at(enter-1).SignalIn.push_back(Data);
 			
 
 			if(this -> network.at(enter-1).isReady() )
@@ -44,7 +46,7 @@ class neuralManager
 				auto result = this -> network.at(enter-1).countValue(network.at(enter-1).SignalIn, network.at(enter-1).weight);
 				auto output = this -> network.at(enter-1).judgeFunc(result,enter);
 
-				for(i : this -> network.at(enter-1).outputConnected)
+				for(auto i : this -> network.at(enter-1).outputConnected)
 					output = go(i,output);
 				
 			}
@@ -57,9 +59,11 @@ class neuralManager
 
 	inline vector<Signal> active(){
 		vector<Signal> output;
-		for(i : Entrance)
+		for(auto i : Entrance)
 		{
-			output.push_back(go(i,NULL));
+			Signal nullSignal;
+			nullSignal.SignalOrigin = SIGNALNULL;
+			output.push_back(go(i,nullSignal));
 		}
 		return output;
 	}
@@ -69,7 +73,7 @@ class neuralManager
 
 		inline void modifyWeight(unsigned int Neural,unsigned int Origin,double changeVal)
 		{
-			for(i : this -> network.at(Neural-1).weight)
+			for(auto i : this -> network.at(Neural-1).weight)
 				if(i.SignalOrigin == Origin)
 					i.value = changeVal;
 		}

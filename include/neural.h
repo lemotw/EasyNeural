@@ -2,6 +2,7 @@
 #define NEURAL_H
 
 #include <vector>
+#include <set>
 
 using namespace std;
 
@@ -61,7 +62,7 @@ class neural
 		inline void addWeight(double wei, unsigned int mark){
 			Weight weiAdd;
 			weiAdd.SignalOrigin = mark;
-			Weight.value        = wei;
+			weiAdd.value        = wei;
 			weight.push_back(weiAdd);
 		}
 

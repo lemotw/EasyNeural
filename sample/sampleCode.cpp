@@ -36,7 +36,7 @@ int main(void)
 
 	//Make connect
 
-	SignalIn signal;
+	Signal signal;
 	signal.SignalOrigin = SIGNALPOINT;
 	signal.value        = firSignal;
 
@@ -77,9 +77,9 @@ double cou(vector<Signal> signalIn,vector<Weight> weight)
 {
 	double sum(0.0);
 
-	for(i:signalIn)
+	for(auto i:signalIn)
 	{
-		for(j:weight)
+		for(auto j:weight)
 			if(j.SignalOrigin == i.SignalOrigin)
 				sum += j.value*i.value;
 	}
