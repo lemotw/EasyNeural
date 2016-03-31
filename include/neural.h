@@ -69,6 +69,11 @@ class neural
 		inline void addWeight(Weight weiAdd){weight.push_back(weiAdd);}
 
 		//As the function name.
+		
+////////////////////////////////////////////////
+
+		inline Signal transferFunc(unsigned int mark)
+		{return judgeFunc(countValue(SignalIn,weight) ,mark);}
 
 ////////////////////////////////////////////////
 
@@ -93,6 +98,8 @@ class neural
 
 		unsigned int   			neuralMark;
 };
+
+
 
 
 #endif

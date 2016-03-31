@@ -6,6 +6,7 @@
 #define SIGNALNULL  4294967294
 
 #include "neural.h"
+#include "iostream"
 
 class neuralManager
 {
@@ -35,22 +36,33 @@ class neuralManager
 				return Data;
 
 			Signal output;
+			cout << Data.SignalOrigin;
 
 			if(Data.SignalOrigin != SIGNALNULL)
-				this -> network.at(enter-1).SignalIn.push_back(Data);
-			
-
-			if(this -> network.at(enter-1).isReady() )
 			{
 
-				auto result = this -> network.at(enter-1).countValue(network.at(enter-1).SignalIn, network.at(enter-1).weight);
-				auto output = this -> network.at(enter-1).judgeFunc(result,enter);
+				cout << "erri";
+				this -> network.at(enter).SignalIn.push_back(Data);
+			
 
-				for(auto i : this -> network.at(enter-1).outputConnected)
-					output = go(i,output);
+				if(this -> network.at(enter).isReady() )
+				{
+
+					auto output = network.at(enter).transferFunc(enter);
+
+					for(auto i : network.at(enter).outputConnected)
+						output = go(i,output);
+					cout << "gg";
 				
+				}
+				return output;
 			}
-			return output;
+			else
+			{
+				
+				
+
+			}
 		//
 		}
 		//Provide for active(),or you can use to active part of network.
@@ -83,8 +95,11 @@ class neuralManager
 
 		inline void makeConnect(unsigned int inpSet, unsigned int outSet)
 		{
-			network.at(outSet-1).inputConnected.push_back(inpSet);
-			network.at(inpSet-1).outputConnected.push_back(outSet);
+			if(inpSet <= network.size() && inpSet > 0)
+				network.at(inpSet-1).outputConnected.push_back(outSet);
+
+			if(outSet <= network.size() && outSet > 0)
+				network.at(outSet-1).outputConnected.push_back(inpSet);	
 		}
 		//As the function name.
 
@@ -101,7 +116,7 @@ class neuralManager
 
 		inline void deleteNeural(unsigned int deleted){this -> network.erase(network.begin() + deleted);}
 		//As the function name.
-
+		double couTest(unsigned int x){return network.at(x).countValue(network.at(x-1).SignalIn, network.at(x-1).weight);}
 /////////////////////////////////////////////////////////////////
 
 		vector<neural>    network;

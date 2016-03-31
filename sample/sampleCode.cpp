@@ -13,7 +13,6 @@ double cou(vector<Signal> signalIn,vector<Weight> weight);
 
 int main(void)
 {
-
 	judge initj = jud;
 	count initc = cou;
 
@@ -33,13 +32,14 @@ int main(void)
 	net.makeConnect(4,1);
 	net.makeConnect(1,2);
 	net.makeConnect(2,3);
+	net.makeConnect(3,ENDPOINT);
 
 	//Make connect
 
 	Signal signal;
 	signal.SignalOrigin = SIGNALPOINT;
 	signal.value        = firSignal;
-
+	
 	net.network.at(0).SignalIn.push_back(signal);
 
 	signal.value        = secSignal;
@@ -52,7 +52,11 @@ int main(void)
 	net.addEntrance(4);
 
 	vector<Signal> result;
+//    cout << net.couTest(2);
 	result = net.active();
+
+	for(auto i:result)
+		cout << i.SignalOrigin << ":" << i.value << endl;
 
 	//That the network work.
 
@@ -69,20 +73,24 @@ Signal jud(double in,unsigned int mark)
 		returnVal.value = in;
 	else
 		returnVal.value = 0;
+	cout << "ssssssssssssssssssss";
 
 	return returnVal;
 }
 
 double cou(vector<Signal> signalIn,vector<Weight> weight)
 {
-	double sum(0.0);
+	double sum(6.0);
 
-	for(auto i:signalIn)
-	{
-		for(auto j:weight)
-			if(j.SignalOrigin == i.SignalOrigin)
-				sum += j.value*i.value;
-	}
-
+//	for(auto i:signalIn)
+//	{
+//		for(auto j:weight)
+//			if(j.SignalOrigin == i.SignalOrigin)
+//				sum += j.value*i.value;
+//	}
+//	if(sum == 0.0)
+//		for(auto i:signalIn)
+//			sum += i.value;
+	cout << "sum" << sum << endl;
 	return sum;
 }
