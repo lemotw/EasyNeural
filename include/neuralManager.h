@@ -111,47 +111,66 @@ class neuralManager
 			this -> IDlist.push_back(returnID);
 			this -> network.push_back(added);
 		}
+
+		inline unsigned int addNeural(neural added)
+		{
+			added.neuralMark = this -> network.size();
+			this -> network.push_back(added);
+		}
+
 //As the function name, add the new Neural to the network.
 
 /////////////////////////////////////////////////Function deleteNeural
 
 		inline void deleteNeural(unsigned int deleted){
-			this -> network.erase(network.begin() + deleted);
-			updateID(deleted);
+			
+			bool flag = false;
+
+			for(auto i:network)
+			{
+				if(i.neuralMark == deleted)
+				{
+					flag = true;
+					break;
+				}
+			}
+			//Check the deleted whether in the network.
+		
+			if(flag){
+				this -> network.erase(network.begin() + deleted);
+				updateID(deleted);
+			}
+
 		}
 //As the function name, delete Neural.
-/////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////Function updateID
 
 		void updateID(unsigned int deletedID)
 		{
-			bool flag = false;
-
-			vector<neuralID>  IDlist_copied;
 
 			for(auto i:IDlist)
 			{
-				if(i.ID == deletedID)
-					flag = true;
-				else
-				{
-				
-					if(i.ID > deletedID)
-					{
-						neuralID copied;
-						neuralID copied;
-						copied.ID = I.id-1;
-						IDlist_copied.push_back(copied);
-					}
-				
-				}
-
+				if(i -> ID > deletedID)
+					i -> ID = (i -> ID) - 1
 			}
-
-			if(flag)
-				this -> IDlist = IDlist_copied;
+			//If the ID greater than the deletedID, then it will minus the ID from 1.
 		}
+		//When deleteNeural() has been used ,then it will call this function to update
+		 
 
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////Function addID
+	inline void addID(neuralID* added)
+	{
+		for(auto i:IDlist)
+			if(i -> ID == added -> ID)
+				return;
+		//Check the struct of neuralID had be not added.
+		IDlist.push_back(added);
+	}
+	//To addID.
+	
+///////////////////////////////////////////////////////////////
 
 		vector<neural>    network;
 		vector<neuralID>  IDlist;
