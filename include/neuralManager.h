@@ -8,6 +8,12 @@
 #include "neural.h"
 #include "iostream"
 
+struct neuralID
+{
+	unsigned int ID;
+
+}
+
 class neuralManager
 {
 	public:
@@ -98,20 +104,57 @@ class neuralManager
 
 //////////////////////////////////////////////////Function addNeural
 
-		inline void addNeural(neural added)
+		inline unsigned int addNeural(neural added, neuralID* returnID)
 		{
 			added.neuralMark = this -> network.size();
+			neuralID -> ID   = added.neuralManager;
+			this -> IDlist.push_back(returnID);
 			this -> network.push_back(added);
 		}
 //As the function name, add the new Neural to the network.
 
 /////////////////////////////////////////////////Function deleteNeural
 
-		inline void deleteNeural(unsigned int deleted){this -> network.erase(network.begin() + deleted);}
+		inline void deleteNeural(unsigned int deleted){
+			this -> network.erase(network.begin() + deleted);
+			updateID(deleted);
+		}
 //As the function name, delete Neural.
 /////////////////////////////////////////////////////////////////
 
+		void updateID(unsigned int deletedID)
+		{
+			bool flag = false;
+
+			vector<neuralID>  IDlist_copied;
+
+			for(auto i:IDlist)
+			{
+				if(i.ID == deletedID)
+					flag = true;
+				else
+				{
+				
+					if(i.ID > deletedID)
+					{
+						neuralID copied;
+						neuralID copied;
+						copied.ID = I.id-1;
+						IDlist_copied.push_back(copied);
+					}
+				
+				}
+
+			}
+
+			if(flag)
+				this -> IDlist = IDlist_copied;
+		}
+
+////////////////////////////////////////////////////////////////
+
 		vector<neural>    network;
+		vector<neuralID>  IDlist;
 		set<unsigned int> Entrance;
 
 };
