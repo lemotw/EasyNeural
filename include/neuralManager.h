@@ -12,7 +12,7 @@ struct neuralID
 {
 	unsigned int ID;
 
-}
+};
 
 class neuralManager
 {
@@ -107,7 +107,7 @@ class neuralManager
 		inline unsigned int addNeural(neural added, neuralID* returnID)
 		{
 			added.neuralMark = this -> network.size();
-			neuralID -> ID   = added.neuralManager;
+			returnID -> ID   = added.neuralMar;
 			this -> IDlist.push_back(returnID);
 			this -> network.push_back(added);
 		}
@@ -152,7 +152,7 @@ class neuralManager
 			for(auto i:IDlist)
 			{
 				if(i -> ID > deletedID)
-					i -> ID = (i -> ID) - 1
+					i -> ID = (i -> ID) - 1;
 			}
 			//If the ID greater than the deletedID, then it will minus the ID from 1.
 		}
@@ -173,7 +173,7 @@ class neuralManager
 ///////////////////////////////////////////////////////////////
 
 		vector<neural>    network;
-		vector<neuralID>  IDlist;
+		vector<neuralID*>  IDlist;
 		set<unsigned int> Entrance;
 
 };
