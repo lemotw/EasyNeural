@@ -37,30 +37,29 @@ class neuralManager
 
 		Signal go(unsigned int enter,Signal Data)
 		{
+
 			if(enter == ENDPOINT)
 				return Data;
 			//If the process at the ENDPOINT, it will return final result.
-
+			Signal returnVal;
 			Signal output;
-//			cout << "Where Data from " << Data.SignalOrigin << endl;  for debug
 
 				this -> network.at(enter).SignalIn.push_back(Data);
 				//Push previous Neural's output to next Neural's input.
 
 				if(this -> network.at(enter).isReady() )
 				{
-//					cout << "The input is ready." << endl;            for debug
 
 					auto output = network.at(enter).transferFunc(enter);
 
 					for(auto i : network.at(enter).outputConnected)
 						output = go(i,output);
 					//Recursive 
-
-//					cout << "End of the loop." << endl;               for debug
+					returnVal = output;
 				
 				}
-				return output;
+
+				return returnVal;
 		}
 //Provide for active(),or you can use to active part of network.
 		
@@ -72,7 +71,9 @@ class neuralManager
 		{
 			Signal nullSignal;
 			nullSignal.SignalOrigin = SIGNALPOINT;
-			output.push_back(go(i,nullSignal));
+
+			Signal re = go(i,nullSignal);
+			output.push_back(re);
 			//Make a empty Signal to avtive the go().
 		}
 		return output;
@@ -93,10 +94,10 @@ class neuralManager
 
 		inline void makeConnect(unsigned int inpSet, unsigned int outSet)
 		{
-			if(inpSet <= network.size() && outSet >= 0)
+			if(inpSet <= network.size())
 				network.at(inpSet).outputConnected.push_back(outSet);
 
-			if(outSet <= network.size() && outSet >= 0)
+			if(outSet <= network.size())
 				network.at(outSet).inputConnected.push_back(inpSet);	
 		}
 //As the function name, make two different Neural link. 
@@ -104,7 +105,7 @@ class neuralManager
 
 //////////////////////////////////////////////////Function addNeural
 
-		inline unsigned int addNeural(neural added, neuralID* returnID)
+		inline void addNeural(neural added, neuralID* returnID)
 		{
 			added.neuralMark = this -> network.size();
 			returnID -> ID   = added.neuralMark;
@@ -116,6 +117,7 @@ class neuralManager
 		{
 			added.neuralMark = this -> network.size();
 			this -> network.push_back(added);
+			return added.neuralMark; 
 		}
 
 //As the function name, add the new Neural to the network.

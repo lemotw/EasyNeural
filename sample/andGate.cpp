@@ -51,6 +51,8 @@ int main(void)
 	vector<Signal> result;
 	result = net.active();
 
+//	std::cout << "x" << result[0].value << endl;
+
 	for(auto i:result)
 		cout << i.value << endl;
 	//print result
@@ -62,12 +64,16 @@ int main(void)
 Signal jud(double in,unsigned int mark)
 {
 	Signal returnVal;
-	returnVal.SignalOrigin = mark;	
+	returnVal.SignalOrigin = mark;
+
+//	cout << "The result of cou :" << in << endl;
 
 	if(in == 2)
 		returnVal.value = 1;
 	else
 		returnVal.value = 0;
+
+//	cout << "The final output : " << returnVal.value << endl;
 
 	return returnVal;
 }
@@ -77,7 +83,10 @@ double cou(vector<Signal> signalIn,vector<Weight> weight)
 	double sum = 0.0;
 
 	for(auto i:signalIn)
+	{
 		sum += i.value;
+//		cout << "Signal : " << i.value << endl;
+	}
 
 	return sum;
 }
