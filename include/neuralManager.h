@@ -107,7 +107,7 @@ class neuralManager
 		inline unsigned int addNeural(neural added, neuralID* returnID)
 		{
 			added.neuralMark = this -> network.size();
-			returnID -> ID   = added.neuralMar;
+			returnID -> ID   = added.neuralMark;
 			this -> IDlist.push_back(returnID);
 			this -> network.push_back(added);
 		}
