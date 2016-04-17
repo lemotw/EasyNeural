@@ -21,7 +21,7 @@ struct Weight
 //The struct of weigth contain the value of weight of recent Neural and origin link.
 
 typedef Signal(*judge)(double,unsigned int);
-typedef double(*count)(vector<Signal>, vector<Weight>);
+typedef double(*countor)(vector<Signal>, vector<Weight>);
 //Two template of function pointer.
 
 class neural
@@ -29,7 +29,7 @@ class neural
 
 	public:
 
-		neural(count countFunction,judge judgeFunction)
+		neural(countor countFunction,judge judgeFunction)
 		{this -> countValue = countFunction;this -> judgeFunc = judgeFunction;}
 
 ///////////////////////////////////////////////////Function isReady
@@ -95,7 +95,7 @@ class neural
 ////////////////////////////////////////////////
 
 		judge    	            judgeFunc;
-		count 					countValue;
+		countor 				countValue;
 
 		vector<unsigned int>    outputConnected;
 		vector<unsigned int>	inputConnected;

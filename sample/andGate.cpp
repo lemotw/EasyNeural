@@ -4,7 +4,7 @@
 using namespace std;
 
 typedef Signal(*judge)(double,unsigned int);
-typedef double(*count)(vector<Signal>, vector<Weight>);
+typedef double(*countor)(vector<Signal>, vector<Weight>);
 //Define function pointer type to init class.
 
 Signal jud(double in,unsigned int mark);
@@ -13,8 +13,8 @@ double cou(vector<Signal> signalIn,vector<Weight> weight);
 
 int main(void)
 {
-	judge initj = jud;
-	count initc = cou;
+	judge   initj = jud;
+	countor initc = cou;
 
 	neuralManager net;
 
