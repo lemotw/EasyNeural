@@ -8,6 +8,8 @@
 #include "neural.h"
 #include "iostream"
 
+using namespace std;
+
 struct neuralID
 {
 	unsigned int ID;
@@ -44,8 +46,26 @@ class neuralManager
 			Signal returnVal;
 			Signal output;
 
-				this -> network.at(enter).SignalIn.push_back(Data);
-				//Push previous Neural's output to next Neural's input.
+				for(auto i : this -> network.at(enter).inputConnected)
+				{
+					if(i == SIGNALPOINT)
+					{
+						for(j : Signal_Init_Set)
+						{
+							if(j.SignalOrigin == enter)
+							{
+								this -> network.at(enter).SignalIn.push_back(j);
+								break;
+							}
+						//Search whether the Signal_Init_Set have the Signal for be a SignalPoint.
+						}
+					
+					this -> network.at(enter).SignalIn.push_back(Data);
+					//If the Signal point don't set, here will use the Data which set value to zero.
+					}
+					else
+						this -> network.at(enter).SignalIn.push_back(Data);
+				//Determine the Signal for SignalIn.
 
 				if(this -> network.at(enter).isReady() )
 				{
@@ -71,6 +91,7 @@ class neuralManager
 		{
 			Signal nullSignal;
 			nullSignal.SignalOrigin = SIGNALPOINT;
+			nullSignal.value        = 0.0;
 
 			Signal re = go(i,nullSignal);
 			output.push_back(re);
@@ -175,7 +196,8 @@ class neuralManager
 ///////////////////////////////////////////////////////////////
 
 		vector<neural>    network;
-		vector<neuralID*>  IDlist;
+		vector<neuralID*> IDlist;
+		vector<Signal>    Signal_Init_Set;
 		set<unsigned int> Entrance;
 
 };

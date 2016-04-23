@@ -1,8 +1,6 @@
 #include "neuralManager.h"
 #include <iostream>
 
-using namespace std;
-
 typedef Signal(*judge)(double,unsigned int);
 typedef double(*countor)(vector<Signal>, vector<Weight>);
 //Define function pointer type to init class.
@@ -22,7 +20,7 @@ int main(void)
 
 	double val;
 	Signal signal;
-	signal.SignalOrigin = SIGNALPOINT;
+	signal.SignalOrigin = 0;
 
 	//The Signal in.
 
@@ -36,14 +34,13 @@ int main(void)
 	cin >> val;
 	signal.value = val;
 
-	net.network.at(0).SignalIn.push_back(signal);
+	net.Signal_Init_Set.push_back(signal);
 
 	cout << "Input the second Signal:";
 	cin >> val;
 	signal.value = val;
 
 	net.network.at(0).SignalIn.push_back(signal);
-
 
 	net.addEntrance(0);
 	//Add entrance.
