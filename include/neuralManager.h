@@ -101,13 +101,23 @@ class neuralManager
 	}
 //According to the Entrance, the function will acess any neural with go() and memoried the output of any part.
 
-///////////////////////////////////////////////////Function modifyWeight
+///////////////////////////////////////////////////Function addWeight
 
-		inline void modifyWeight(unsigned int Neural,unsigned int Origin,double changeVal)
+		inline void addWeight(unsigned int Neural,unsigned int Origin,double changeVal)
 		{
 			for(auto i : this -> network.at(Neural).weight)
+			{
 				if(i.SignalOrigin == Origin)
+				{
 					i.value = changeVal;
+					return;
+				}
+			}
+			
+			Signal pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
+
+			network.at(Neural).weigth.push_back(pushed);
+
 		}
 //As the function name, modify the special Neural's weight.
 
