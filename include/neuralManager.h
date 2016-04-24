@@ -24,7 +24,7 @@ class neuralManager
 
 		inline void addEntrance(unsigned int mark)
 		{
-			for(auto i : this -> Entrance)
+			for(auto i : Entrance)
 				if(i == mark)
 					return;
 			Entrance.insert(mark);
@@ -48,10 +48,10 @@ class neuralManager
 			Signal output;
 
 			if(network.at(enter).inputConnected.at(0) != SIGNALPOINT)
-				this -> network.at(enter).SignalIn.push_back(Data);
+				network.at(enter).SignalIn.push_back(Data);
 			//Push previous Neural's output to next Neural's input.
 
-			if(this -> network.at(enter).isReady() )
+			if(network.at(enter).isReady() )
 			{
 
 				auto output = network.at(enter).transferFunc(enter);
@@ -86,11 +86,13 @@ class neuralManager
 
 ///////////////////////////////////////////////////Function modifyWeight
 
-		inline void modifyWeight(unsigned int Neural,unsigned int Origin,double changeVal)
+		inline void addWeight(unsigned int Neural,unsigned int Origin,double changeVal)
 		{
-			for(auto i : this -> network.at(Neural).weight)
+			for(auto i : network.at(Neural).weight)
 				if(i.SignalOrigin == Origin)
 					i.value = changeVal;
+			Weight pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
+			network.at(Neural).weight.push_back(pushed);
 		}
 //As the function name, modify the special Neural's weight.
 
@@ -132,7 +134,7 @@ class neuralManager
 			
 			bool flag = false;
 
-			for(auto i:network)
+			for(auto i : network)
 			{
 				if(i.neuralMark == deleted)
 				{
@@ -143,7 +145,35 @@ class neuralManager
 			//Check the deleted whether in the network.
 		
 			if(flag){
-				this -> network.erase(network.begin() + deleted);
+				
+				for(auto i : network.at(deleted).outputConnected)
+				{
+					for(int j=0 ; j<network.at(i).inputConnected.size() ; ++j)
+					{
+						if(*(network.at(i).inputConnected.begin() + j) == deleted)
+							network.at(i).inputConnected.erase(network.at(i).inputConnected.begin() + j);
+					}
+
+					for(int j=0 ; j<network.at(i).weight.size() ; ++j)
+					{
+						if((network.at(i).weight.begin() + j)->SignalOrigin == deleted)
+							network.at(i).weight.erase(network.at(i).weight.begin() + j);
+					}
+
+				}
+			//Clean the relation of the deleted output.
+
+				for(auto i : network.at(deleted).inputConnected)
+				{
+					for(int j=0 ; j<network.at(i).outputConnected.size() ;++j)
+					{
+						if(*(network.at(i).outputConnected.begin() + j) == deleted)
+							network.at(i).outputConnected.erase(network.at(i).outputConnected.begin() + j);
+					}
+				}
+				//Clean the relation of the deleted input.
+
+				network.erase(network.begin() + deleted);
 				updateID(deleted);
 			}
 
@@ -155,7 +185,7 @@ class neuralManager
 		void updateID(unsigned int deletedID)
 		{
 
-			for(auto i:IDlist)
+			for(auto i : IDlist)
 			{
 				if(i -> ID > deletedID)
 					i -> ID = (i -> ID) - 1;
@@ -168,7 +198,7 @@ class neuralManager
 ////////////////////////////////////////////////////////////////Function addID
 	inline void addID(neuralID* added)
 	{
-		for(auto i:IDlist)
+		for(auto i : IDlist)
 			if(i -> ID == added -> ID)
 				return;
 		//Check the struct of neuralID had be not added.
@@ -190,8 +220,11 @@ class neuralManager
 	
 		neural SignalP(emptyCountor,emptyJudge);
 		SignalP.inputConnected.push_back(SIGNALPOINT);
-		auto x = addNeural(SignalP);
-		return x;
+		auto markRt = addNeural(SignalP);
+		
+		addEntrance(markRt);
+
+		return markRt;
 	
 	}
 
