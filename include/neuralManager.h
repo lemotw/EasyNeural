@@ -8,8 +8,6 @@
 #include "neural.h"
 #include "iostream"
 
-using namespace std;
-
 struct neuralID
 {
 	unsigned int ID;
@@ -41,43 +39,28 @@ class neuralManager
 		{
 
 			if(enter == ENDPOINT)
+			{
+				Data.SignalOrigin = ENDPOINT;
 				return Data;
+			}
 			//If the process at the ENDPOINT, it will return final result.
 			Signal returnVal;
 			Signal output;
 
-				for(auto i : this -> network.at(enter).inputConnected)
-				{
-					if(i == SIGNALPOINT)
-					{
-						for(j : Signal_Init_Set)
-						{
-							if(j.SignalOrigin == enter)
-							{
-								this -> network.at(enter).SignalIn.push_back(j);
-								break;
-							}
-						//Search whether the Signal_Init_Set have the Signal for be a SignalPoint.
-						}
-					
-					this -> network.at(enter).SignalIn.push_back(Data);
-					//If the Signal point don't set, here will use the Data which set value to zero.
-					}
-					else
-						this -> network.at(enter).SignalIn.push_back(Data);
-				//Determine the Signal for SignalIn.
+			if(network.at(enter).inputConnected.at(0) != SIGNALPOINT)
+				this -> network.at(enter).SignalIn.push_back(Data);
+			//Push previous Neural's output to next Neural's input.
 
-				if(this -> network.at(enter).isReady() )
-				{
+			if(this -> network.at(enter).isReady() )
+			{
 
-					auto output = network.at(enter).transferFunc(enter);
-
-					for(auto i : network.at(enter).outputConnected)
-						output = go(i,output);
+				auto output = network.at(enter).transferFunc(enter);
+				for(auto i : network.at(enter).outputConnected)
+					output = go(i,output);
 					//Recursive 
-					returnVal = output;
+				returnVal = output;
 				
-				}
+			}
 
 				return returnVal;
 		}
@@ -91,33 +74,23 @@ class neuralManager
 		{
 			Signal nullSignal;
 			nullSignal.SignalOrigin = SIGNALPOINT;
-			nullSignal.value        = 0.0;
-
+			
 			Signal re = go(i,nullSignal);
-			output.push_back(re);
+			if(re.SignalOrigin == ENDPOINT)
+				output.push_back(re);
 			//Make a empty Signal to avtive the go().
 		}
 		return output;
 	}
 //According to the Entrance, the function will acess any neural with go() and memoried the output of any part.
 
-///////////////////////////////////////////////////Function addWeight
+///////////////////////////////////////////////////Function modifyWeight
 
-		inline void addWeight(unsigned int Neural,unsigned int Origin,double changeVal)
+		inline void modifyWeight(unsigned int Neural,unsigned int Origin,double changeVal)
 		{
 			for(auto i : this -> network.at(Neural).weight)
-			{
 				if(i.SignalOrigin == Origin)
-				{
 					i.value = changeVal;
-					return;
-				}
-			}
-			
-			Signal pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
-
-			network.at(Neural).weigth.push_back(pushed);
-
 		}
 //As the function name, modify the special Neural's weight.
 
@@ -203,11 +176,37 @@ class neuralManager
 	}
 	//To addID.
 	
+///////////////////////////////////////////////////////////////Function makeSignalPoint
+
+	static double emptyCountor(vector<Signal> ss, vector<Weight> ww)
+	{return ss.at(0).value;}
+
+	static Signal emptyJudge(double vv, unsigned int mm)
+	{Signal returnVal{returnVal.SignalOrigin = mm, returnVal.value = vv};
+	 return returnVal;}
+
+	inline unsigned int makeSignalPoint()
+	{
+	
+		neural SignalP(emptyCountor,emptyJudge);
+		SignalP.inputConnected.push_back(SIGNALPOINT);
+		auto x = addNeural(SignalP);
+		return x;
+	
+	}
+
+///////////////////////////////////////////////////////////////Function pushSignalIn
+
+	void pushSignalIn(Signal In, unsigned int mark)
+	{
+		In.SignalOrigin =  SIGNALPOINT;
+		network.at(mark).SignalIn.push_back(In);
+	}
+
 ///////////////////////////////////////////////////////////////
 
 		vector<neural>    network;
-		vector<neuralID*> IDlist;
-		vector<Signal>    Signal_Init_Set;
+		vector<neuralID*>  IDlist;
 		set<unsigned int> Entrance;
 
 };
