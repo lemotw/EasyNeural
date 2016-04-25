@@ -54,13 +54,12 @@ int main(void)
 	net.addEntrance(0);
 	//Add entrance.
 
-	vector<Signal> result;
-	result = net.active();
+	net.active();
 
 //	std::cout << "x" << result[0].value << endl;
 
-	for(auto i:result)
-		cout << i.value <<  endl;
+	for(auto i:net.outputStore)
+		cout << "So: " << i.SignalOrigin << " Val: " << i.value << endl;
 	//print result
 
 	return 0;
