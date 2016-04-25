@@ -238,7 +238,7 @@ class neuralManager
 
 ///////////////////////////////////////////////////////////////
 
-	vector<Signal> getVal(unsigned int get)
+	vector<Signal> getOutputVal(unsigned int get)
 	{
 		vector<Signal> returnSet;
 
