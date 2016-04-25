@@ -41,6 +41,7 @@ class neuralManager
 			if(enter == ENDPOINT)
 			{
 				Data.SignalOrigin = ENDPOINT;
+				outputStore.push_back(Data);
 				return Data;
 			}
 			//If the process at the ENDPOINT, it will return final result.
@@ -55,6 +56,8 @@ class neuralManager
 			{
 
 				auto output = network.at(enter).transferFunc(enter);
+				outputStore.push_back(output);
+
 				for(auto i : network.at(enter).outputConnected)
 					output = go(i,output);
 					//Recursive 
@@ -64,23 +67,20 @@ class neuralManager
 
 				return returnVal;
 		}
+
 //Provide for active(),or you can use to active part of network.
 		
 ///////////////////////////////////////////////////Function active
 
-	inline vector<Signal> active(){
-		vector<Signal> output;
+	inline void active(){
 		for(auto i : Entrance)
 		{
 			Signal nullSignal;
 			nullSignal.SignalOrigin = SIGNALPOINT;
 			
 			Signal re = go(i,nullSignal);
-			if(re.SignalOrigin == ENDPOINT)
-				output.push_back(re);
 			//Make a empty Signal to avtive the go().
 		}
-		return output;
 	}
 //According to the Entrance, the function will acess any neural with go() and memoried the output of any part.
 
@@ -238,8 +238,24 @@ class neuralManager
 
 ///////////////////////////////////////////////////////////////
 
+	vector<Signal> getVal(unsigned int get)
+	{
+		vector<Signal> returnSet;
+
+		for(auto i : outputStore)
+		{
+			if(get == i.SignalOrigin)
+				returnSet.push_back(i);
+		}
+
+		return returnSet;
+	}
+
+//////////////////////////////////////////////////////////////
+
 		vector<neural>    network;
-		vector<neuralID*>  IDlist;
+		vector<neuralID*> IDlist;
+		vector<Signal>    outputStore;
 		set<unsigned int> Entrance;
 
 };
