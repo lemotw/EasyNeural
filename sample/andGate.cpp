@@ -56,12 +56,29 @@ int main(void)
 
 	net.active();
 
-//	std::cout << "x" << result[0].value << endl;
+	cout << endl << "s1: " << signalin1 << " s2: " << signalin2 << " n0: " << n1_mark << endl;
 
 	for(auto i:net.outputStore)
 		cout << "So: " << i.SignalOrigin << " Val: " << i.value << endl;
-	//print result
 
+	cout << "Input the first Signal:";
+	cin >> val;
+	signal.value = val;
+
+	net.pushSignalIn(signal, signalin1);
+
+	cout << "Input the second Signal:";
+	cin >> val;
+	signal.value = val;
+
+	net.pushSignalIn(signal, signalin2);
+
+
+
+	net.active();
+
+//	std::cout << "x" << result[0].value << endl;
+		
 	return 0;
 
 }

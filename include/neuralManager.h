@@ -48,6 +48,7 @@ class neuralManager
 			{
 
 				Signal DataRecursive = network[enter].transferFunc(enter);
+				network[enter].SignalIn.clear();
 				outputStore.push_back(DataRecursive);
 
 				for(auto i : network[enter].outputConnected)
@@ -63,6 +64,9 @@ class neuralManager
 ///////////////////////////////////////////////////Function active
 
 	inline void active(){
+		
+		outputStore.clear();
+
 		for(auto i : Entrance)
 		{
 			Signal nullSignal;
@@ -71,6 +75,7 @@ class neuralManager
 			reDO(i,nullSignal);
 			//Make a empty Signal to avtive the reDO().
 		}
+
 	}
 //According to the Entrance, the function will acess any neural with reDO() and memoried the output of any part.
 
@@ -234,19 +239,16 @@ class neuralManager
 
 ///////////////////////////////////////////////////////////////
 
-	vector<Signal> getOutputVal(unsigned int forcus)
+	Signal getOutputVal(unsigned int forcus)
 	{
-		vector<Signal> returnSet;
-		//If this neural network doesn't work just one time.
-		//It must have one more Signal for every neural.
 
 		for(Signal i : outputStore)
 		{
 			if(forcus == i.SignalOrigin)
-				returnSet.push_back(i);
+				return i;
 		}
-
-		return returnSet;
+		Signal ret{ret.SignalOrigin = SIGNALNULL, ret.value = 0.0};
+		return ret;
 	}
 
 //////////////////////////////////////////////////////////////
