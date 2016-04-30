@@ -251,8 +251,29 @@ class neuralManager
 		return ret;
 	}
 
-//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////Function deleteConnection
 
+	void deleteConnection(unsigned int inputEnd,unsigned int outputEnd)
+	{
+	
+		for(int i=0 ; network[inputEnd].outputConnected.size() ; ++i)
+		{
+		
+			if(*(network[inputEnd].outputConnected.begin() + i) == outputEnd)
+				network[inputEnd].outputConnected.erase(network[inputEnd].outputConnected.begin() + i);
+		
+		}
+
+		for(int i=0 ; i<network[outputEnd].inputConnected.size() ; ++i)
+		{
+		
+			if(*(network[outputEnd].inputConnected.begin() + i) == inputEnd)
+				network[outputEnd].inputConnected.erase(network[outputEnd].inputConnected.begin() + i);
+		
+		}
+
+	}
+//////////////////////////////////////////////////////////////
 		vector<neural>        network;
 		vector<Signal>        outputStore;
 
