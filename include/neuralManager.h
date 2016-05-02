@@ -5,8 +5,21 @@
 #define SIGNALPOINT 4294967293
 #define SIGNALNULL  4294967294
 
+#define LINE_EXTENCTION_POINT 255
+#define NORMAL                254
+
 #include "neural.h"
-#include "iostream"
+#include <list>
+#include <iostream>
+
+struct connection
+{
+	unsigned int inputEnd;
+	unsigned int outputEnd;
+
+	char  		 status;
+	double 		 weightVal;
+};
 
 class neuralManager
 {
@@ -89,6 +102,19 @@ class neuralManager
 
 			Weight pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
 			network[Neural].weight.push_back(pushed);
+		}
+
+		inline void addWeight(connection con)
+		{
+			for(auto i : network[con.outputEnd].weight)
+				if(i.SignalOrigin == con.inputEnd)
+				{
+					i.value = con.weightVal;
+					return;
+				}
+
+			Weight pushed{pushed.SignalOrigin = con.inputEnd, pushed.value = con.weightVal};
+			network[con.outputEnd].weight.push_back(pushed);
 		}
 //As the function name, modify the special Neural's weight.
 
@@ -273,13 +299,55 @@ class neuralManager
 		}
 
 	}
+//////////////////////////////////////////////////////////////Function make_connection_table
+
+   	double make_connection_table(unsigned int enter, unsigned int origin)
+	{
+
+		static bool flag = true;
+		if(flag)
+		{
+			connection_Table.clear();
+			flag = false;
+
+			for(auto i:Entrance)
+				make_connection_table(i, SIGNALPOINT);
+
+			return 0.0;
+		}
+		else
+		{
+		
+			connection pushed;
+			pushed.inputEnd = enter;
+
+			if(network[enter].outputConnected.size() > 1)
+				pushed.status = LINE_EXTENCTION_POINT;
+			else
+				pushed.status = NORMAL;
+
+			for(auto i:network[enter].outputConnected)
+			{
+				pushed.outputEnd = i;
+				pushed.weightVal = make_connection_table(i, enter);
+				connection_Table.push_front(pushed);
+			}
+
+		for(auto i:network[enter].weight)
+				if(i.SignalOrigin == origin)
+					return i.value;
+			return 0.0;
+		
+		}
+	}
+
 //////////////////////////////////////////////////////////////
 		vector<neural>        network;
 		vector<Signal>        outputStore;
 
 		vector<unsigned int*> IDlist;
 		set<unsigned int>     Entrance;
-
+		list<connection>	  connection_Table;
 };
 
 #endif
