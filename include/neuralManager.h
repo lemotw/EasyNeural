@@ -287,7 +287,7 @@ class neuralManager
 		
 			if(*(network[inputEnd].outputConnected.begin() + i) == outputEnd)
 				network[inputEnd].outputConnected.erase(network[inputEnd].outputConnected.begin() + i);
-		
+	
 		}
 
 		for(int i=0 ; i<network[outputEnd].inputConnected.size() ; ++i)
@@ -298,6 +298,11 @@ class neuralManager
 		
 		}
 
+		for(int i=0 ; network[outputEnd].weight.size() ; ++i)
+		{
+			if(*(network[outputEnd].weight.begin() + i).SignalOrigin == inputEnd)
+				network[outputEnd].weight.erase(network[outputEnd].weight.begin() + i);
+		}
 	}
 //////////////////////////////////////////////////////////////Function make_connection_table
 
