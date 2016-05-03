@@ -347,6 +347,14 @@ class neuralManager
 	}
 
 //////////////////////////////////////////////////////////////
+
+	inline void makeWeightedConnection(unsigned int source, unsigned int target, double weightVal)
+	{
+		makeConnect(source, target);
+		addWeight(target ,source ,weightVal);
+	}
+
+//////////////////////////////////////////////////////////////
 		vector<neural>        network;
 		vector<Signal>        outputStore;
 
