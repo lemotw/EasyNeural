@@ -300,7 +300,7 @@ class neuralManager
 
 		for(int i=0 ; network[outputEnd].weight.size() ; ++i)
 		{
-			if(*(network[outputEnd].weight.begin() + i).SignalOrigin == inputEnd)
+			if(network[outputEnd].weight[i].SignalOrigin == inputEnd)
 				network[outputEnd].weight.erase(network[outputEnd].weight.begin() + i);
 		}
 	}
