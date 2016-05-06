@@ -304,50 +304,46 @@ class neuralManager
 				network[outputEnd].weight.erase(network[outputEnd].weight.begin() + i);
 		}
 	}
-//////////////////////////////////////////////////////////////Function make_connection_table
+//////////////////////////////////////////////////////////////
 
-   	double make_connection_table(unsigned int enter, unsigned int origin)
-	{
-
-		static bool flag = true;
-		if(flag)
+		void poll(unsigned int enter,unsigned int origin)
 		{
-			connection_Table.clear();
-			flag = false;
 
-			for(auto i:Entrance)
-				make_connection_table(i, SIGNALPOINT);
-
-			return 0.0;
-		}
-		else
-		{
+			if(enter == ENDPOINT)
+						return;
+		
 		
 			connection pushed;
-			pushed.inputEnd = enter;
+			pushed.inputEnd = origin;
+			pushed.outputEnd= enter;
+
+			for(auto i:network[enter].weight)
+				if(i.SignalOrigin == origin)
+					pushed.weightVal = i.value;		
 
 			if(network[enter].outputConnected.size() > 1)
 				pushed.status = LINE_EXTENCTION_POINT;
 			else
 				pushed.status = NORMAL;
 
-			for(auto i:network[enter].outputConnected)
-			{
-				pushed.outputEnd = i;
-				pushed.weightVal = make_connection_table(i, enter);
-				connection_Table.push_front(pushed);
-			}
+			connection_Table.push_back(pushed);
 
-		for(auto i:network[enter].weight)
-				if(i.SignalOrigin == origin)
-					return i.value;
-			return 0.0;
-		
+			for(auto i:network[enter].outputConnected)
+				poll(i, enter);
+
 		}
+
+	inline void make_connection_table(){
+		
+		connection_Table.clear();
+
+		for(auto i : Entrance)
+			poll(i,SIGNALPOINT);
+
 	}
 
-//////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////
 	inline void makeWeightedConnection(unsigned int source, unsigned int target, double weightVal)
 	{
 		makeConnect(source, target);
@@ -360,7 +356,7 @@ class neuralManager
 
 		vector<unsigned int*> IDlist;
 		set<unsigned int>     Entrance;
-		list<connection>	  connection_Table;
+		vector<connection>	  connection_Table;
 };
 
 #endif
