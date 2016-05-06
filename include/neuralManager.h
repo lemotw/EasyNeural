@@ -309,7 +309,7 @@ class neuralManager
 		void poll(unsigned int enter,unsigned int origin)
 		{
 
-			if(enter == ENDPOINT)
+			 if(enter == ENDPOINT || network[origin].outputConnected.size() == 0)
 						return;
 		
 		
