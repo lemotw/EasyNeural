@@ -291,7 +291,7 @@ class neuralManager
 	void deleteConnection(unsigned int inputEnd,unsigned int outputEnd)
 	{
 	
-		for(int i=0 ; network[inputEnd].outputConnected.size() ; ++i)
+		for(int i=0 ; i<network[inputEnd].outputConnected.size() ; ++i)
 			if(network[inputEnd].outputConnected[i] == outputEnd)
 				network[inputEnd].outputConnected.erase(network[inputEnd].outputConnected.begin() + i);
 	
