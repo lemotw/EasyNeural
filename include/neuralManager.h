@@ -96,48 +96,40 @@ class neuralManager
 
 		inline void addWeight(unsigned int Neural,unsigned int Origin,double changeVal)
 		{
-			connection con;
-			for(auto i : network[Neural].weight)
-				if(i.SignalOrigin == Origin)
-					i.value = changeVal;
-			
+	
+			Weight     pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
+			connection con{con.inputEnd = Origin, con.outputEnd = Neural, 
+						   con.status = NORMAL, con.weightVal = changeVal};
+
+			for(int i=0 ; i<network[Neural].weight.size() ; ++i)
+				if(network[Neural].weight[i].SignalOrigin == Origin)
+					network[Neural].weight.erase(network[Neural].weight.begin() + i);
+
 			for(int i=0 ; i<connection_Table.size() ; ++i)
 				if(connection_Table[i].inputEnd == Origin && connection_Table[i].outputEnd == Neural)
 					connection_Table.erase(connection_Table.begin() + i);
 
-			con.inputEnd = Origin;
-			con.outputEnd= Neural;
-			con.weightVal= changeVal;
-			con.status   = NORMAL;
-
-			Weight pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
 			network[Neural].weight.push_back(pushed);
 			connection_Table.push_back(con);
 		}
 
 		inline void addWeight(connection con)
 		{
-			for(auto i : network[con.outputEnd].weight)
-				if(i.SignalOrigin == con.inputEnd)
-				{
-					i.value = con.weightVal;
-					return;
-				}
+
+			Weight pushed{pushed.SignalOrigin = con.inputEnd, pushed.value = con.weightVal};
+
+			for(int i=0 ; i<network[con.outputEnd].weight.size() ; ++i)
+				if(network[con.outputEnd].weight[i].SignalOrigin == con.inputEnd)
+					network[con.outputEnd].weight.erase(network[con.outputEnd].weight.begin() + i);
 
 			for(int i=0 ; i<connection_Table.size() ; ++i)
 				if(connection_Table[i].inputEnd == con.inputEnd && connection_Table[i].outputEnd == con.outputEnd )
 					connection_Table.erase(connection_Table.begin() + i);
 			
-
-			Weight pushed{pushed.SignalOrigin = con.inputEnd, pushed.value = con.weightVal};
 			network[con.outputEnd].weight.push_back(pushed);
 			connection_Table.push_back(con);
 		}
 //As the function name, modify the special Neural's weight.
-
-		inline void addWeight(unsigned int addIn, Weight weightAdd)
-		{network[addIn].weight.push_back(weightAdd);}
-
 //////////////////////////////////////////////////Function makeConnect
 
 		inline void makeConnect(unsigned int inpSet, unsigned int outSet)
@@ -300,26 +292,16 @@ class neuralManager
 	{
 	
 		for(int i=0 ; network[inputEnd].outputConnected.size() ; ++i)
-		{
-		
-			if(*(network[inputEnd].outputConnected.begin() + i) == outputEnd)
+			if(network[inputEnd].outputConnected[i] == outputEnd)
 				network[inputEnd].outputConnected.erase(network[inputEnd].outputConnected.begin() + i);
 	
-		}
-
 		for(int i=0 ; i<network[outputEnd].inputConnected.size() ; ++i)
-		{
-		
-			if(*(network[outputEnd].inputConnected.begin() + i) == inputEnd)
+			if(network[outputEnd].inputConnected[i] == inputEnd)
 				network[outputEnd].inputConnected.erase(network[outputEnd].inputConnected.begin() + i);
 		
-		}
-
 		for(int i=0 ; network[outputEnd].weight.size() ; ++i)
-		{
 			if(network[outputEnd].weight[i].SignalOrigin == inputEnd)
 				network[outputEnd].weight.erase(network[outputEnd].weight.begin() + i);
-		}
 
 		for(int i=0 ; i<connection_Table.size() ; ++i)
 			if(connection_Table[i].inputEnd == inputEnd && connection_Table[i].outputEnd == outputEnd)
