@@ -38,8 +38,6 @@ class neuralManager
 			return;
 		}
 
-//Add Entrance if the set dosen't contain as the new.
-
 ////////////////////////////////////////////////////Function reDO
 
 		void reDO(unsigned int enter,Signal Data)
@@ -72,8 +70,6 @@ class neuralManager
 				return;
 		}
 
-//Provide for active(),or you can use to active part of network.
-		
 ///////////////////////////////////////////////////Function active
 
 	inline void active(){
@@ -90,24 +86,26 @@ class neuralManager
 		}
 
 	}
-//According to the Entrance, the function will acess any neural with reDO() and memoried the output of any part.
 
-///////////////////////////////////////////////////Function modifyWeight
+///////////////////////////////////////////////////Function addWeight
 
 		inline void addWeight(unsigned int Neural,unsigned int Origin,double changeVal)
 		{
 	
 			Weight     pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
+
 			connection con{con.inputEnd = Origin, con.outputEnd = Neural, 
 						   con.status = NORMAL, con.weightVal = changeVal};
+			//Make the con and weight which will be pushed.
 
 			for(int i=0 ; i<network[Neural].weight.size() ; ++i)
 				if(network[Neural].weight[i].SignalOrigin == Origin)
 					network[Neural].weight.erase(network[Neural].weight.begin() + i);
-
+			
 			for(int i=0 ; i<connection_Table.size() ; ++i)
 				if(connection_Table[i].inputEnd == Origin && connection_Table[i].outputEnd == Neural)
 					connection_Table.erase(connection_Table.begin() + i);
+			//Search whether they have been vector.
 
 			network[Neural].weight.push_back(pushed);
 			connection_Table.push_back(con);
@@ -117,6 +115,7 @@ class neuralManager
 		{
 
 			Weight pushed{pushed.SignalOrigin = con.inputEnd, pushed.value = con.weightVal};
+			//Make the weight who will be pushed.
 
 			for(int i=0 ; i<network[con.outputEnd].weight.size() ; ++i)
 				if(network[con.outputEnd].weight[i].SignalOrigin == con.inputEnd)
@@ -125,23 +124,22 @@ class neuralManager
 			for(int i=0 ; i<connection_Table.size() ; ++i)
 				if(connection_Table[i].inputEnd == con.inputEnd && connection_Table[i].outputEnd == con.outputEnd )
 					connection_Table.erase(connection_Table.begin() + i);
-			
+			//Search for whether they have been vector.
+
 			network[con.outputEnd].weight.push_back(pushed);
 			connection_Table.push_back(con);
 		}
-//As the function name, modify the special Neural's weight.
+
 //////////////////////////////////////////////////Function makeConnect
 
-		inline void makeConnect(unsigned int inpSet, unsigned int outSet)
+		inline void makeConnect(unsigned int source, unsigned int target)
 		{
-			if(inpSet <= network.size())
-				network[inpSet].outputConnected.push_back(outSet);
+			if(source <= network.size())
+				network[source].outputConnected.push_back(target);
 
-			if(outSet <= network.size())
-				network[outSet].inputConnected.push_back(inpSet);	
+			if(target <= network.size())
+				network[target].inputConnected.push_back(source);	
 		}
-//As the function name, make two different Neural link. 
-//And the first param is the Neural which receive the output Neural of second param.
 
 //////////////////////////////////////////////////Function addNeural
 
@@ -183,17 +181,14 @@ class neuralManager
 				
 				for(unsigned int i : network[deleted].outputConnected)
 				{
+
 					for(int j=0 ; j<network[i].inputConnected.size() ; ++j)
-					{
 						if(*(network[i].inputConnected.begin() + j) == deleted)
 							network[i].inputConnected.erase(network[i].inputConnected.begin() + j);
-					}
-
+					
 					for(int j=0 ; j<network[i].weight.size() ; ++j)
-					{
 						if((network[i].weight.begin() + j)->SignalOrigin == deleted)
 							network[i].weight.erase(network[i].weight.begin() + j);
-					}
 
 				}
 				//Clean the relation of the deleted output.
@@ -201,10 +196,9 @@ class neuralManager
 				for(auto i : network[deleted].inputConnected)
 				{
 					for(int j=0 ; j<network[i].outputConnected.size() ;++j)
-					{
 						if(*(network[i].outputConnected.begin() + j) == deleted)
 							network[i].outputConnected.erase(network[i].outputConnected.begin() + j);
-					}
+		
 				}
 				//Clean the relation of the deleted input.
 
@@ -213,7 +207,6 @@ class neuralManager
 			}
 
 		}
-//As the function name, delete Neural.
 
 /////////////////////////////////////////////////////////////////Function updateID
 
@@ -227,9 +220,7 @@ class neuralManager
 			}
 			//If the ID greater than the deletedID, then it will minus the ID from 1.
 		}
-		//When deleteNeural() has been used ,then it will call this function to update
 		 
-
 ////////////////////////////////////////////////////////////////Function addID
 	inline void addID(unsigned* added)
 	{
@@ -239,7 +230,6 @@ class neuralManager
 		//Check the struct of neuralID had be not added.
 		IDlist.push_back(added);
 	}
-	//To addID.
 	
 ///////////////////////////////////////////////////////////////Function makeSignalPoint
 
@@ -272,7 +262,7 @@ class neuralManager
 		network[mark].SignalIn.push_back(In);
 	}
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////Function getOutputVal
 
 	Signal getOutputVal(unsigned int forcus)
 	{
@@ -306,47 +296,11 @@ class neuralManager
 		for(int i=0 ; i<connection_Table.size() ; ++i)
 			if(connection_Table[i].inputEnd == inputEnd && connection_Table[i].outputEnd == outputEnd)
 				connection_Table.erase(connection_Table.begin() + i);
-	}
-//////////////////////////////////////////////////////////////
-/*
-		void poll(unsigned int enter,unsigned int origin)
-		{
-
-			 if(enter == ENDPOINT || network[origin].outputConnected.size() == 0)
-						return;
-		
-		
-			connection pushed;
-			pushed.inputEnd = origin;
-			pushed.outputEnd= enter;
-
-			for(auto i:network[enter].weight)
-				if(i.SignalOrigin == origin)
-					pushed.weightVal = i.value;		
-
-			if(network[enter].outputConnected.size() > 1)
-				pushed.status = LINE_EXTENCTION_POINT;
-			else
-				pushed.status = NORMAL;
-
-			connection_Table.push_back(pushed);
-
-			for(auto i:network[enter].outputConnected)
-				poll(i, enter);
-
-		}
-
-	inline void make_connection_table(){
-		
-		connection_Table.clear();
-
-		for(auto i : Entrance)
-			poll(i,SIGNALPOINT);
 
 	}
-*/
 
-/////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////Function makeWeightedConnection
+		
 	inline void makeWeightedConnection(unsigned int source, unsigned int target, double weightVal)
 	{
 		makeConnect(source, target);
@@ -354,6 +308,7 @@ class neuralManager
 	}
 
 //////////////////////////////////////////////////////////////
+
 		vector<neural>        network;
 		vector<Signal>        outputStore;
 

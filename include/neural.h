@@ -14,14 +14,12 @@ struct Signal
 	unsigned int SignalOrigin;
 	double 		 value;
 };
-//The struct of signal contain information that where come from and the value.
 
 struct Weight
 {
 	unsigned int SignalOrigin;
 	double       value;
 };
-//The struct of weigth contain the value of weight of recent Neural and origin link.
 
 typedef Signal(*judge)(double,unsigned int);
 typedef double(*countor)(vector<Signal>, vector<Weight>);
@@ -63,7 +61,6 @@ class neural
 			else
 				return false;
 		}
-//Check whether the all input is contain in SignalIn.
 
 /////////////////////////////////////////////////Function addWeight
 
@@ -75,13 +72,11 @@ class neural
 		}
 
 		inline void addWeight(Weight weiAdd){weight.push_back(weiAdd);}
-//As the function name, add new weigth in vector of weigth.
 		
 ////////////////////////////////////////////////Function transferFunc
 
 		inline Signal transferFunc(unsigned int mark)
 		{return judgeFunc(countValue(SignalIn,weight) ,mark);}
-//Call two of pointer to use judge output, that is countVale and judgeFunc.
 
 ////////////////////////////////////////////////Operatir ==
 
@@ -93,7 +88,6 @@ class neural
 			else 
 				return false;
 		}
-//If the Neural's mark is equal ,it will return True.
 
 ////////////////////////////////////////////////
 
