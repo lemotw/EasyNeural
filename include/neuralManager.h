@@ -12,6 +12,17 @@
 #include <list>
 #include <iostream>
 
+double signalPointCountor(vector<Signal> s, vector<Weight> w)
+{return s[0].value;}
+
+Signal signalPointJudge(double vv, unsigned int mm)
+{
+	Signal returnVal{returnVal.SignalOrigin = mm, returnVal.value = vv};
+	return returnVal;
+}
+//To provide two function for makeSignalPoint make SignalPoint neuron.
+
+
 struct connection
 {
 	unsigned int inputEnd;
@@ -143,23 +154,36 @@ class neuralManager
 
 //////////////////////////////////////////////////Function addNeural
 
-		inline void addNeural(neural added, unsigned int* returnID)
+		inline void addNeural(countor initc ,judge initj ,unsigned int* ID)
 		{
-			added.neuralMark = this -> network.size();
-			*returnID        = added.neuralMark;
+			neural pushed(initc, initj);
 
-			this -> IDlist.push_back(returnID);
-			this -> network.push_back(added);
+			pushed.neuralMark = network.size();
+			*ID               = pushed.neuralMark;
+
+			IDlist.push_back(ID);
+			network.push_back(pushed);
 		}
 
-		inline unsigned int addNeural(neural added)
+		inline unsigned int addNeural(countor initc ,judge initj)
 		{
-			added.neuralMark = this -> network.size();
-			this -> network.push_back(added);
-			return added.neuralMark; 
+		
+			neural pushed(initc, initj);
+
+			pushed.neuralMark = network.size();
+			network.push_back(pushed);
+			
+			return pushed.neuralMark;
 		}
 
-//As the function name, add the new Neural to the network.
+		inline unsigned int addNeural(neural pushed)
+		{
+		
+			pushed.neuralMark = network.size();
+			network.push_back(pushed);
+			return pushed.neuralMark;
+
+		}
 
 /////////////////////////////////////////////////Function deleteNeural
 
@@ -233,17 +257,10 @@ class neuralManager
 	
 ///////////////////////////////////////////////////////////////Function makeSignalPoint
 
-	static double emptyCountor(vector<Signal> ss, vector<Weight> ww)
-	{return ss[0].value;}
-
-	static Signal emptyJudge(double vv, unsigned int mm)
-	{Signal returnVal{returnVal.SignalOrigin = mm, returnVal.value = vv};
-	 return returnVal;}
-
 	inline unsigned int makeSignalPoint()
 	{
-	
-		neural SignalP(emptyCountor,emptyJudge);
+
+		neural SignalP(signalPointCountor,signalPointJudge);
 		SignalP.inputConnected.push_back(SIGNALPOINT);
 		auto markRt = addNeural(SignalP);
 		//Make a neuron which use to translation Signal in the neural network.
@@ -307,8 +324,9 @@ class neuralManager
 		addWeight(target ,source ,weightVal);
 	}
 
-//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////Function
 
+//////////////////////////////////////////////////////////////
 		vector<neural>        network;
 		vector<Signal>        outputStore;
 

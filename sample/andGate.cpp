@@ -18,7 +18,6 @@ int main(void)
 
 	neuralManager net;
 
-	neural n1(initc,initj);
 
 	double val;
 	Signal signal;
@@ -26,7 +25,7 @@ int main(void)
 
 	//The Signal in.
 
-	unsigned int n1_mark   = net.addNeural(n1);
+	unsigned int n1_mark   = net.addNeural(initc, initj);
  
 	unsigned int signalin1 = net.makeSignalPoint();
 	unsigned int signalin2 = net.makeSignalPoint();
