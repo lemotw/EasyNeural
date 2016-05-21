@@ -1,4 +1,4 @@
 test.cpp
 *.out
 main
-src
+CMakeLists.txt

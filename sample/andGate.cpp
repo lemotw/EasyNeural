@@ -1,4 +1,4 @@
-#include "neuralManager.h"
+#include "src/neuralManager.h"
 #include <iostream>
 
 using namespace std;
