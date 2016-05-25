@@ -1,23 +1,24 @@
 #ifndef NEURALMANAGER_H
 #define NEURALMANAGER_H
 
-#define ENDPOINT    4294967295
-#define SIGNALPOINT 4294967293
-#define SIGNALNULL  4294967294
-
-#define LINE_EXTENCTION_POINT 255
-#define NORMAL                254
-
 #include "neural.h"
 #include <list>
 #include <iostream>
+
+enum class TypeOfSignalEnd : unsigned int
+{
+
+	ENDPOINT    = 4294967295,
+	SIGNALNULL  = 4294967294,
+   	SIGNALPOINT = 4294967293 
+
+};
 
 struct connection
 {
 	unsigned int inputEnd;
 	unsigned int outputEnd;
 
-	char  		 status;
 	double 		 weightVal;
 };
 

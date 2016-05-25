@@ -29,15 +29,15 @@ void neuralManager::addEntrance(unsigned int mark)
 void neuralManager::reDO(unsigned int enter,Signal Data)
 {
 
-	if(enter == ENDPOINT)
+	if(enter == static_cast<unsigned int>(TypeOfSignalEnd::ENDPOINT))
 	{
-		Data.SignalOrigin = ENDPOINT;
+		Data.SignalOrigin = static_cast<unsigned int>(TypeOfSignalEnd::ENDPOINT);
 		outputStore.push_back(Data);
 		return;
 	}
-	//If the process at the ENDPOINT, it will return final result.
+	//If the process at the static_cast<unsigned int>(TypeOfSignalEnd::ENDPOINT), it will return final result.
 			
-	if(network[enter].inputConnected[0] != SIGNALPOINT)
+	if(network[enter].inputConnected[0] != static_cast<unsigned int>(TypeOfSignalEnd::SIGNALPOINT))
 		network[enter].SignalIn.push_back(Data);
 	//Push previous Neural's output to next Neural's input.
 
@@ -65,7 +65,7 @@ void neuralManager::active(){
 	for(auto i : Entrance)
 	{
 		Signal nullSignal;
-		nullSignal.SignalOrigin = SIGNALPOINT;
+		nullSignal.SignalOrigin = static_cast<unsigned int>(TypeOfSignalEnd::SIGNALPOINT);
 			
 		reDO(i,nullSignal);
 		//Make a empty Signal to avtive the reDO().
@@ -81,7 +81,7 @@ void neuralManager::addWeight(unsigned int Neural,unsigned int Origin,double cha
 	Weight     pushed{pushed.SignalOrigin = Origin, pushed.value = changeVal};
 
 	connection con{con.inputEnd = Origin, con.outputEnd = Neural, 
-				   con.status = NORMAL, con.weightVal = changeVal};
+				   con.weightVal = changeVal};
 	//Make the con and weight which will be pushed.
 
 	for(int i=0 ; i<network[Neural].weight.size() ; ++i)
@@ -237,7 +237,7 @@ unsigned int neuralManager::makeSignalPoint()
 {
 
 	neural SignalP(signalPointCountor,signalPointJudge);
-	SignalP.inputConnected.push_back(SIGNALPOINT);
+	SignalP.inputConnected.push_back(static_cast<unsigned int>(TypeOfSignalEnd::SIGNALPOINT));
 	auto markRt = addNeural(SignalP);
 	//Make a neuron which use to translation Signal in the neural network.
 		
@@ -251,7 +251,7 @@ unsigned int neuralManager::makeSignalPoint()
 
 void neuralManager::pushSignalIn(Signal In, unsigned int mark)
 {
-	In.SignalOrigin =  SIGNALPOINT;
+	In.SignalOrigin =  static_cast<unsigned int>(TypeOfSignalEnd::SIGNALPOINT);
 	network[mark].SignalIn.push_back(In);
 }
 
@@ -265,7 +265,7 @@ Signal neuralManager::getOutputVal(unsigned int forcus)
 		if(forcus == i.SignalOrigin)
 			return i;
 	}
-	Signal ret{ret.SignalOrigin = SIGNALNULL, ret.value = 0.0};
+	Signal ret{ret.SignalOrigin = static_cast<unsigned int>(TypeOfSignalEnd::SIGNALNULL), ret.value = 0.0};
 	return ret;
 }
 

@@ -21,7 +21,7 @@ int main(void)
 
 	double val;
 	Signal signal;
-	signal.SignalOrigin = SIGNALPOINT;
+	signal.SignalOrigin = static_cast<unsigned int>(TypeOfSignalEnd::SIGNALPOINT) ;
 
 	//The Signal in.
 
@@ -32,7 +32,7 @@ int main(void)
 
 	net.makeConnect(signalin1,n1_mark);
 	net.makeConnect(signalin2,n1_mark);
-	net.makeConnect(n1_mark,ENDPOINT);
+	net.makeConnect(n1_mark,static_cast<unsigned int>(TypeOfSignalEnd::ENDPOINT)  );
 	//Make link.
 	
 	net.addEntrance(signalin1);
