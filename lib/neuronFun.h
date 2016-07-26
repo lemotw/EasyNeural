@@ -1,3 +1,6 @@
+#ifndef NEURONFUN_H
+#define NEURONFUN_H
+
 #include <math.h>
 #include "neural.h"
 
@@ -18,3 +21,5 @@ double Log_Sigmoid(double);
 double Hyperbolic_Tangent_Sigmoid(double);
 
 double sumOfSignal(vector<Signal>, vector<Weight>);
+
+#endif
