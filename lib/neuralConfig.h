@@ -6,6 +6,22 @@
 #include <string>
 #include <queue>
 #include <regex>
+#include <map>
+
+//Jud
+#define Hard_Limit					"Hard_Limit1"
+#define Hard_Limits					"Hard_Limits1"
+#define Linear          			"Linear1"
+#define Saturating_Linear			"Saturating_Linear1"
+#define Saturating_Linears 			"Saturating_Linears1"
+#define Postive_Linear				"Postive_Linear1"
+#define Log_Sigmoid					"Log_Sigmoid1"
+#define Hyperbolic_Tangent_Sigmoid	"Hyperbolic_Tangent_Sigmoid1"
+
+//Cou
+#define sumOfSignal					"sumOfSignal" 
+//For getFunction test
+
 
 using namespace std;
 
@@ -25,7 +41,7 @@ class FileReader
 
 		FileReader(){}
 
-		void loadToken();
+void loadToken();
 
 		string getString();
 
@@ -77,11 +93,24 @@ class Configer
 
 		string  	 getAfterInfo(string& MainLine, int pos);
 		//Done
+		
+		string		 getFunctionJud(string functionName);
+		string		 getFunctionCou(string functionName);
+		//Prepare Try
 
+		bool         addFunctionCou(string functionName, countor function);
+		bool		 addFunctionJud(string functionName, judge   function);
+
+		bool		 rmFunctionCou(string functionName);
+		bool		 rmFunctionJud(string functionName);
+
+		void done();
+		//Prepare Try
 
 	private:
-			FileReader reader;
-
+			FileReader			reader;
+			map<string,countor> couPool;
+			map<string,judge>   judPool;
 };
 
 class TestUnit
@@ -93,7 +122,9 @@ class TestUnit
 		void getString(string TokenLine); //Configer
 		//Try get Function info.
 	
-	//	void getName(string TokenLine); //Configer
+		void DoMovement(string TokenLine); //Configer
 		//Try get the value of var.
 
 };
+
+#endif
