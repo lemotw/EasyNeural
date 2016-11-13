@@ -1,9 +1,6 @@
 #ifndef NEURAL_H
 #define NEURAL_H
 
-#define ENDPOINT    4294967295
-#define SIGNALPOINT 4294967293
-
 #include <vector>
 #include <set>
 

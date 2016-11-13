@@ -39,14 +39,13 @@ class neuralManager
 		void 		 addWeight(unsigned int Neural,unsigned int Origin,double changeVal);
 		void 		 addWeight(connection con);
 
-		void  		 makeConnect(unsigned int source, unsigned int target);
+		void  		 makeConnect(unsigned int source, unsigned int target, double weightVal);
 
-		void  		 makeWeightedConnection(unsigned int source, unsigned int target, double weightVal);
-
-		void		 deleteConnection(unsigned int inputEnd,unsigned int outputEnd);
+		void		 deleteConnect(unsigned int inputEnd,unsigned int outputEnd);
 //_____________________________________________________________________________________________________
 
-		unsigned int makeSignalPoint();
+		unsigned int makeSP();
+		void         makeEP(unsigned int target);
 
 		void		 addNeural(countor initc ,judge initj ,unsigned int* ID);
 		unsigned int addNeural(countor initc ,judge initj);

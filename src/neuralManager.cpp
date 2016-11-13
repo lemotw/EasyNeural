@@ -10,7 +10,7 @@ Signal signalPointJudge(double vv, unsigned int mm)
 	Signal returnVal{returnVal.SignalOrigin = mm, returnVal.value = vv};
 	return returnVal;
 }
-//To provide two function for makeSignalPoint make SignalPoint neuron.
+//To provide two function for makeSP make SignalPoint neuron.
 
 
 /////////////////////////////////////////////////////Function addEntrance
@@ -118,13 +118,16 @@ void neuralManager::addWeight(connection con)
 
 //////////////////////////////////////////////////Function makeConnect
 
-void neuralManager::makeConnect(unsigned int source, unsigned int target)
+void neuralManager::makeConnect(unsigned int source, unsigned int target, double weightVal=1.0)
 {
 	if(source <= network.size())
 		network[source].outputConnected.push_back(target);
 
 	if(target <= network.size())
-		network[target].inputConnected.push_back(source);	
+		network[target].inputConnected.push_back(source);
+
+	
+	addWeight(target ,source ,weightVal);
 }
 
 //////////////////////////////////////////////////Function addNeural
@@ -231,9 +234,9 @@ void neuralManager::addID(unsigned* added)
 	IDlist.push_back(added);
 }
 	
-///////////////////////////////////////////////////////////////Function makeSignalPoint
+///////////////////////////////////////////////////////////////Function makeSP
 
-unsigned int neuralManager::makeSignalPoint()
+unsigned int neuralManager::makeSP()
 {
 
 	neural SignalP(signalPointCountor,signalPointJudge);
@@ -269,9 +272,9 @@ Signal neuralManager::getOutputVal(unsigned int forcus)
 	return ret;
 }
 
-//////////////////////////////////////////////////////////////Function deleteConnection
+//////////////////////////////////////////////////////////////Function deleteConnect
 
-void neuralManager::deleteConnection(unsigned int inputEnd,unsigned int outputEnd)
+void neuralManager::deleteConnect(unsigned int inputEnd,unsigned int outputEnd)
 {
 	
 	for(int i=0 ; i<network[inputEnd].outputConnected.size() ; ++i)
@@ -292,12 +295,12 @@ void neuralManager::deleteConnection(unsigned int inputEnd,unsigned int outputEn
 
 }
 
-//////////////////////////////////////////////////////////////Function makeWeightedConnection
-		
-void neuralManager::makeWeightedConnection(unsigned int source, unsigned int target, double weightVal)
+/////////////////////////////////////////////////////////Function setEP
+
+void neuralManager::makeEP(unsigned int target)
 {
-	makeConnect(source, target);
-	addWeight(target ,source ,weightVal);
+	network[target].outputConnected.push_back((unsigned int)TypeOfSignalEnd::ENDPOINT);
+
 }
 
-//////////////////////////////////////////////////////////////END
+/////////////////////////////////////////////////////////
